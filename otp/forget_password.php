@@ -54,6 +54,7 @@
             <option value="student">STUDENT</option>
             <option value="peer">PEER</option>
             <option value="superior">SUPERIOR</option>
+            <option value="admin">ADMIN</option>
         </select>
     </div>
     <div class="center">

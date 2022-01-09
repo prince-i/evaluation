@@ -97,8 +97,9 @@
                                 <div class="left-side-forget">
                                     <input type="checkbox" name="remember" id="remember" class="checked">
                                     <span class="remenber-me">Remember me </span>
+                                    
                                 </div>
-                                
+                                <a href="../otp/forget_password.php" style="color:white;float:right;">Forget password?</a>
                             </div>
                             
                             <div class="btnn">
