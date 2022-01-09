@@ -137,7 +137,6 @@ $purpose = $_GET['purpose'];
                 email_add: '<?=$email;?>',
                 purpose: '<?=$purpose;?>',
             },success:function(x){
-                console.log(x);
                 var data = x.split('==');
                 if(data[0] == 'success'){
                     resend_email(data[1]);
