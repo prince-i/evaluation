@@ -1,0 +1,40 @@
+{
+	"folders": [
+		{
+			"path": "..\\admin"
+		},
+		{
+			"path": "..\\css"
+		},
+		{
+			"path": "..\\fonts"
+		},
+		{
+			"path": "..\\img"
+		},
+		{
+			"path": "..\\js"
+		},
+		{
+			"path": "..\\scss"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "..\\superior"
+		},
+		{
+			"path": "..\\uploads"
+		},
+		{
+			"path": "..\\vendor"
+		},
+		{
+			"path": "..\\peer"
+		},
+		{
+			"path": "..\\exports"
+		}
+	]
+}

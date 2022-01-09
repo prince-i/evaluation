@@ -1,0 +1,50 @@
+<?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+$emailAddress = trim($_POST['email']);
+$otp = trim($_POST['otp']);
+
+require 'vendor/autoload.php'; ## AUTOLOAD ALL COMPONENTS MAILER
+$mail = new PHPMailer(true);
+try {
+    //Server settings
+    $mail->SMTPDebug = 1;                      // Enable verbose debug output
+    $mail->isSMTP();                                            // Send using SMTP
+    $mail->Host       = 'smtp.gmail.com';                    // Set the SMTP server to send through
+    $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+    $mail->Username   = 'pytp731@gmail.com';                     // SMTP username
+    $mail->Password   = 'premium1234';                               // SMTP password
+    $mail->SMTPSecure = 'tls';         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
+    $mail->Port       = 587;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
+
+    //Recipients
+    $mail->setFrom('pytp731@gmail.com', 'CCC Evalutation System');
+    $mail->addAddress($emailAddress, '');     // Add a recipient
+    // $mail->addAddress('');               // Name is optional
+    // $mail->addReplyTo('info@example.com', 'Information');
+    // $mail->addCC('');
+    // $mail->addBCC('');
+
+    // Attachments
+    // $mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
+    // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
+
+    // Content
+    $mail->isHTML(true);                                  // Set email format to HTML
+    $mail->Subject = 'OTP - CCC EVALUATION SYSTEM';
+    $mail->Body = '
+    <h1>New login detected!</h1><br>
+    <p>To confirm login, verify your account using given OTP below.</p>
+    <h2>OTP: '.$otp.'</h2><br>
+    <p>Best,<br>CCC EVALUATION SYSTEM TEAM</p>';
+    $mail->AltBody = 'OTP';
+
+    $mail->send();
+    echo 'Message has been sent';
+} catch (Exception $e) {
+    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+}
+
+
+?>
