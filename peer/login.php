@@ -12,7 +12,33 @@ if(isset($_POST['submit']))
 list($user_id)=mysqli_fetch_array($query);
 
 $_SESSION['user_id']=$user_id;
-header("location: index.php");
+##GENERATE OTP
+$OTP = mt_rand(10000,99999);
+
+//GET EMAIL
+$getMail = "SELECT email,prof_fname,prof_lname FROM prof_stud WHERE prof_id = '$user_id'";
+$res = mysqli_query($connection,$getMail);
+while($row = mysqli_fetch_assoc($res)){
+    $email = $row['email'];
+    $fullname = $row['prof_fname']." ".$row['prof_lname'];
+}
+
+##EXPIRATION
+$expr = new DateTime($server_date);
+$expr->modify('+1 day');
+$expr = $expr->format('Y-m-d');
+
+##SAVE OTP
+if(!empty($email)){
+    $saveOTP = "INSERT INTO otp (`otp_code`,`email`,`expiration`,`purpose`) VALUES ('$OTP','$email','$expr','LOGIN')";
+    if(mysqli_query($connection,$saveOTP)){
+        ## SEND EMAIL
+        ## CONVERT OTP TO HEXADECIMAL FOR SECURITY
+        header('location: ../otp/mailer/index.php?email_add='.$email.'&&name='.$fullname.'&&otp='.bin2hex($OTP).'&&type=peer');
+    }
+}
+
+## -------------------------------------------------------------------
 
 $check=1;
 

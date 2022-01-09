@@ -11,6 +11,17 @@ $user_id=$_SESSION['user_id'];
 
     list($dept_name,$fname,$lname,$status, $username,$password, $email, $dept_code, $number)=mysqli_fetch_array($query);
 ?> 
+
+<?php
+## CHECK IF HAS EXISTING OTP REQUEST
+## PEER
+$getOTPReq = "SELECT id FROM otp WHERE email = '$email' AND purpose LIKE 'LOGIN%' AND expiration > '$server_date' ORDER BY id DESC LIMIT 1";
+$res = mysqli_query($connection,$getOTPReq);
+if(mysqli_num_rows($res) > 0){
+    header('location:../otp/verify.php?email='.bin2hex($email).'&&type=peer&&purpose=LOGIN');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

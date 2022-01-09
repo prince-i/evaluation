@@ -118,7 +118,7 @@ mysqli_close($connection);
                     <div class="btnn">
                         <button type="submit" id="submit" name="submit" value="Login" >Login </button>
                     </div>
-                    <div style="color: white;font-size: 16px; letter-spacing: 1px;font-family: 'Open Sans', sans-serif;">Don't have an account? <a href="registration.php" style="text-weight:bold; font-size: 18px; letter-spacing: 2px; color:white; text-transform: uppercase;text-decoration: underline;">Sign up here</a></div>
+                    <div style="color: white;font-size: 16px; letter-spacing: 1px;font-family: 'Open Sans', sans-serif;">Don't have an account? <a href="registration.php" style="font-weight:bold; font-size: 18px; letter-spacing: 2px; color:white; text-transform: uppercase;text-decoration: underline;">Sign up here</a></div>
 					
                 </form>
                 

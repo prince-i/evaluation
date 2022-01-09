@@ -120,8 +120,10 @@ $purpose = $_GET['purpose'];
             window.location.replace('../superior/account.php');
         }else if(acctype == 'admin'){
             window.location.replace('../admin/index.php');
-        }else{
+        }else if(acctype == 'peer'){
             window.location.replace('../peer/index.php');
+        }else{
+            
         }
     }
 
