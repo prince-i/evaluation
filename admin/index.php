@@ -1,14 +1,21 @@
 <?php include("../session.php");  
 include('../connection.php');
 $table='admin';
+$admin_id = $_SESSION['admin_id'];
 
 
-$result=mysqli_query($con,"select admin_id, Username, Password from $table")or die('Error In Session');
-$count=mysqli_num_rows($result);
-$i=1;
-
+## CHECK IF HAS EXISTING OTP REQUEST
+$getadmin = mysqli_query($con,"SELECT admin_id,username,email FROM admin WHERE admin_id = '$admin_id'") or die ("ERROR");
+list($admin_id,$username,$email) = mysqli_fetch_array($getadmin);
 
 ?> 
+<?php
+$getOTPReq = "SELECT id FROM otp WHERE email = '$email' AND purpose LIKE 'LOGIN%' ORDER BY id DESC LIMIT 1";
+$res = mysqli_query($con,$getOTPReq);
+if(mysqli_num_rows($res) > 0){
+    header('location:../otp/verify.php?email='.bin2hex($email).'&&type=admin&&purpose=LOGIN');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 

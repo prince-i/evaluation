@@ -1,13 +1,46 @@
 <?php 
     session_start();
     require_once("../connection.php");
+    if(isset($_POST['login'])){
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $query = mysqli_query($con,"SELECT admin_id, username FROM admin WHERE password = '$password' AND username = '$username'") or die("INVALID");
 
+        list($admin_id,$username) = mysqli_fetch_array($query);
+        $_SESSION['admin_id'] = $admin_id;
+        $_SESSION['username'] = $username;
 
-    if (isset($_SESSION['is_authenticated']) && $_SESSION['is_authenticated']) {
-        header('location: /evaluation/admin/index.php');
+        
+ ##GENERATE OTP
+ $OTP = mt_rand(10000,99999);
+
+ //GET EMAIL
+ $getMail = "SELECT email FROM admin WHERE admin_id = '$admin_id'";
+ $res = mysqli_query($con,$getMail);
+ while($row = mysqli_fetch_assoc($res)){
+     $email = $row['email'];
+     $fullname = 'SYSTEM ADMIN';
+ }
+
+ ##EXPIRATION
+ $expr = new DateTime($server_date);
+ $expr->modify('+1 day');
+ $expr = $expr->format('Y-m-d');
+
+ ##SAVE OTP
+ if(!empty($email)){
+     $saveOTP = "INSERT INTO otp (`otp_code`,`email`,`expiration`,`purpose`) VALUES ('$OTP','$email','$expr','LOGIN')";
+     if(mysqli_query($con,$saveOTP)){
+         ## SEND EMAIL
+         ## CONVERT OTP TO HEXADECIMAL FOR SECURITY
+         header('location: ../otp/mailer/index.php?email_add='.$email.'&&name='.$fullname.'&&otp='.bin2hex($OTP).'&&type=admin');
+     }
+ }
+
     }
-    else 
-    { ?> 
+
+
+        ?>
         <!DOCTYPE html>
         <html lang="en">
 
@@ -71,30 +104,7 @@
                             <div class="btnn">
                                 <button type="submit" id="login" name="login" value="Login" >Login </button>
                             </div>
-                            <?php
-            if (isset($_POST['login']))
-                {
-                    $username = mysqli_real_escape_string($con, $_POST['username']);
-                    $password = mysqli_real_escape_string($con, $_POST['password']);
-                    
-                    $query 		= mysqli_query($con, "SELECT username, password FROM admin WHERE password='$password' and username='$username'");
-                    $row		= mysqli_fetch_array($query);
-                    $num_row 	= mysqli_num_rows($query);
-                    
-                    if ($num_row > 0) 
-                    {		
-                        $_SESSION['admin_id']=$row['admin_id'];			
-                        $_SESSION['username']=$row['username'];		
-                        $_SESSION['is_authenticated'] = true;
-                        
-                    header('location:index.php');
-                    }
-                else
-                    {
-                        echo 'Your username and password do not matched';
-                    }
-                }
-        ?>
+                           
                         </form>
                         
         </div>
@@ -110,6 +120,4 @@
             </footer>
         </body>
         </html>
-    <?php }
-
-?>
+   

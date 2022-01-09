@@ -15,7 +15,7 @@ $user_id=$_SESSION['user_id'];
 
 <?php
 ## CHECK IF HAS EXISTING OTP REQUEST
-$getOTPReq = "SELECT id FROM otp WHERE email = '$email' AND purpose LIKE 'LOGIN%' ORDER BY id DESC LIMIT 1";
+$getOTPReq = "SELECT id FROM otp WHERE email = '$email' AND purpose LIKE 'LOGIN%' AND expiration > '$server_date' ORDER BY id DESC LIMIT 1";
 $res = mysqli_query($connection,$getOTPReq);
 if(mysqli_num_rows($res) > 0){
     header('location:../otp/verify.php?email='.bin2hex($email).'&&type=student&&purpose=LOGIN');

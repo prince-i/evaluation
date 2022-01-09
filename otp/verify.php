@@ -86,6 +86,8 @@ $purpose = $_GET['purpose'];
                     if(x == 'success'){
                         delete_otp();
                     
+                    }else{
+                        $('#msg').html('WRONG OTP');
                     }
                 }
             });

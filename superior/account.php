@@ -2,7 +2,6 @@
 include("session.php");
 include("connection.php");
 $user_id=$_SESSION['user_id'];
- 
 ?>
 <?php
     $query=mysqli_query($connection,"SELECT dept_name, prefix, fname, mname, lname, email, username, password, dept_code, number FROM superior INNER JOIN
@@ -14,7 +13,7 @@ $user_id=$_SESSION['user_id'];
 
 <?php
 ## CHECK IF HAS EXISTING OTP REQUEST
-$getOTPReq = "SELECT id FROM otp WHERE email = '$email' AND purpose LIKE 'LOGIN%' ORDER BY id DESC LIMIT 1";
+$getOTPReq = "SELECT id FROM otp WHERE email = '$email' AND purpose LIKE 'LOGIN%' AND expiration > '$server_date' ORDER BY id DESC LIMIT 1";
 $res = mysqli_query($connection,$getOTPReq);
 if(mysqli_num_rows($res) > 0){
     header('location:../otp/verify.php?email='.bin2hex($email).'&&type=superior&&purpose=LOGIN');
