@@ -10,7 +10,7 @@
         $_SESSION['admin_id'] = $admin_id;
         $_SESSION['username'] = $username;
 
-        
+
  ##GENERATE OTP
  $OTP = mt_rand(10000,99999);
 
