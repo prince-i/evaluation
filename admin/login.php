@@ -1,6 +1,7 @@
 <?php 
     session_start();
     require_once("../connection.php");
+    $msg = "";
     if(isset($_POST['login'])){
         $username = $_POST['username'];
         $password = $_POST['password'];
@@ -9,8 +10,9 @@
         list($admin_id,$username) = mysqli_fetch_array($query);
         $_SESSION['admin_id'] = $admin_id;
         $_SESSION['username'] = $username;
-
-
+if($_SESSION['admin_id'] == '' || empty($_SESSION['admin_id'])){
+    $msg = "WRONG USERNAME OR PASSWORD";
+    }
  ##GENERATE OTP
  $OTP = mt_rand(10000,99999);
 
@@ -36,11 +38,8 @@
          header('location: ../otp/mailer/index.php?email_add='.$email.'&&name='.$fullname.'&&otp='.bin2hex($OTP).'&&type=admin');
      }
  }
-
-    }
-
-
-        ?>
+}
+?>
         <!DOCTYPE html>
         <html lang="en">
 
@@ -103,6 +102,8 @@
                             </div>
                             
                             <div class="btnn">
+                            <br><br>
+                    <h3 style="color:black;text-align:center;"><?=$msg;?></h3>
                                 <button type="submit" id="login" name="login" value="Login" >Login </button>
                             </div>
                            

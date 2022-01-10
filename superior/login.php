@@ -2,6 +2,7 @@
 session_start();
 include("connection.php");
 $check=0;
+$msg = "";
 if(isset($_POST['submit']))
 {
  $username = $_POST['tbx_username'];
@@ -12,7 +13,9 @@ if(isset($_POST['submit']))
 list($user_id)=mysqli_fetch_array($query);
 
 $_SESSION['user_id']=$user_id;
-// header("location: index.php");
+if($_SESSION['user_id'] == '' || empty($_SESSION['user_id'])){
+    $msg = "WRONG USERNAME OR PASSWORD";
+}
 
 ##GENERATE OTP
 $OTP = mt_rand(10000,99999);
@@ -115,6 +118,10 @@ mysqli_close($connection);
                     </div>
 					
                     <div class="btnn">
+                        <!-- --------------------------- -->
+                    <br><br>
+                    <h3 style="color:black;text-align:center;"><?=$msg;?></h3>
+                    <!-- ------------------------------ -->
                         <button type="submit" id="submit" name="submit" value="Login" >Login </button>
                     </div>
 					

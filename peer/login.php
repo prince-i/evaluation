@@ -2,20 +2,22 @@
 session_start();
 include("connection.php");
 $check=0;
-if(isset($_POST['submit']))
-{
+$msg = ""; # SET MSG TO NULL TO AVOID ERROR
+if(isset($_POST['submit'])){
  $username = $_POST['tbx_username'];
  $userpassword = $_POST['tbx_password'];
  $query=mysqli_query($connection,"select prof_id from prof_stud where username='$username' and password='$userpassword'")or die ("query 1 incorrect.......");
-
-
+ ## GET DATA BY LIST FUNCTION
 list($user_id)=mysqli_fetch_array($query);
 
 $_SESSION['user_id']=$user_id;
+if($_SESSION['user_id'] == '' || empty($_SESSION['user_id'])){
+    $msg = "WRONG USERNAME OR PASSWORD";
+}
 ##GENERATE OTP
 $OTP = mt_rand(10000,99999);
 
-//GET EMAIL
+//GET EMAIL -----------------------------------------------------------
 $getMail = "SELECT email,prof_fname,prof_lname FROM prof_stud WHERE prof_id = '$user_id'";
 $res = mysqli_query($connection,$getMail);
 while($row = mysqli_fetch_assoc($res)){
@@ -28,7 +30,7 @@ $expr = new DateTime($server_date);
 $expr->modify('+1 day');
 $expr = $expr->format('Y-m-d');
 
-##SAVE OTP
+##SAVE OTP -----------------------------------------------------
 if(!empty($email)){
     $saveOTP = "INSERT INTO otp (`otp_code`,`email`,`expiration`,`purpose`) VALUES ('$OTP','$email','$expr','LOGIN')";
     if(mysqli_query($connection,$saveOTP)){
@@ -41,14 +43,10 @@ if(!empty($email)){
 ## -------------------------------------------------------------------
 
 $check=1;
-
-if($check==0)
-{
-$check=2;
+if($check==0){
+    $check=2;
 }
-
 mysqli_close($connection);
-
 }
 ?>
 
@@ -114,6 +112,8 @@ mysqli_close($connection);
                     </div>
 					
                     <div class="btnn">
+                    <br><br>
+                    <h3 style="color:black;text-align:center;"><?=$msg;?></h3>
                         <button type="submit" id="submit" name="submit" value="Login" >Login </button>
                     </div>
 					

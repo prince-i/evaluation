@@ -2,6 +2,7 @@
 session_start();
 include("../connection.php");
 $check=0;
+$msg = ""; ## MSG IF CREDENTIALS ARE WRONG
 if(isset($_POST['submit']))
 {
  $username = $_POST['tbx_username'];
@@ -12,6 +13,10 @@ if(isset($_POST['submit']))
 list($user_id)=mysqli_fetch_array($query);
 $_SESSION['user_id']=$user_id;
 
+if($_SESSION['user_id'] == ''){
+    ## MSG 
+    $msg = "WRONG USERNAME OR PASSWORD!";
+}
 ##GENERATE OTP
 $OTP = mt_rand(10000,99999);
 
@@ -44,21 +49,14 @@ if(!empty($email)){
 // header("location: account.php");
 
 $check=1;
-
-if($check==0)
-{
-$check=2;
+if($check==0){
+    $check=2;
 }
-
-mysqli_close($connection);
-
+mysqli_close($con);
 }
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>Login</title>
     <!-- Meta tags -->
@@ -81,6 +79,7 @@ mysqli_close($connection);
 </head>
 <body>
     <h1 class="error">CCC Evaluation System</h1>
+   
     <div class="w3layouts-two-grids">
         <div class="mid-class">
 		
@@ -92,6 +91,7 @@ mysqli_close($connection);
 			
 			
             <div class="txt-left-side">
+           
                 <h2> Login Here </h2>
                 <p>This system automatically compute the performance ratings came from the students</p>
                 <form method="post">
@@ -116,6 +116,8 @@ mysqli_close($connection);
                     </div>
                    
                     <div class="btnn">
+                    <br><br>
+                    <h3 style="color:black;text-align:center;"><?=$msg;?></h3>
                         <button type="submit" id="submit" name="submit" value="Login" >Login </button>
                     </div>
                     <div style="color: white;font-size: 16px; letter-spacing: 1px;font-family: 'Open Sans', sans-serif;">Don't have an account? <a href="registration.php" style="font-weight:bold; font-size: 18px; letter-spacing: 2px; color:white; text-transform: uppercase;text-decoration: underline;">Sign up here</a></div>
